@@ -5,6 +5,8 @@
  */
 package tsa.software.development;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -12,35 +14,39 @@ import java.awt.event.*;
  *
  * @author JTo
  */
-public class StartPage {
+
+public class StartPage extends Window {
+    // objects
+    JButton exitBtn;
+    JLabel welcomeLbl;
     
-    //
-    JFrame f;
-    
-    //create and initialize home page
-    public void createPage(){
-        //create page
-        f = new JFrame(); 
-        
-        JButton b=new JButton("Click Here");  
-        b.setBounds(50,100,95,30);  
-        b.addActionListener(new ActionListener(){  
-       
-        public void actionPerformed(ActionEvent e){  
-            
-        }  
-        }); 
-        
-       
-        //screen specifications
-        f.setSize(1920, 1080);
-        f.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        f.setUndecorated(true);
+    // constructor
+    public StartPage() {
+        super();
+        createPage();
     }
     
-    //make page visible
-    public void showPage(){
-        f.setVisible(true);
+    // user-defined constructor
+    public StartPage(int windowWidth, int windowHeight) {
+        super(windowWidth, windowHeight);
+        createPage();
     }
-    
+
+    // creates page
+    private void createPage() {
+        exitBtn = new JButton("Exit");
+        welcomeLbl = new JLabel("Welcome");
+        exitBtn.setBounds(((int)(this.getWindowWidth()*0.85)),
+                ((int)(this.getWindowHeight()*0.85)),
+                ((int)(this.getWindowWidth()*0.1)),
+                ((int)(this.getWindowHeight()*0.1))); // x-axis, y-axis, width, height
+        exitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        this.getJFrame().add(exitBtn);
+        this.getJFrame().add(welcomeLbl);
+        }
 }

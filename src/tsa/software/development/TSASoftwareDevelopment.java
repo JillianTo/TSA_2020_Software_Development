@@ -15,12 +15,10 @@ public class TSASoftwareDevelopment {
 
     /**
      * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        StartPage startPage = new StartPage();
-        
-       
-        startPage.createPage();
+     */ 
+    public static void main(String[] args) { 
+        StartPage startPage = new StartPage(2560,1080);
+        startPage.setFullscreen();
         startPage.showPage();
     }
     
