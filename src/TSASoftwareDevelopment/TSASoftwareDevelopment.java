@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tsa.software.development;
-
-
+package TSASoftwareDevelopment;
 
 /**
  *
- * @author JTo
+ * @author Jillian To
  */
 public class TSASoftwareDevelopment {
 
@@ -17,9 +15,10 @@ public class TSASoftwareDevelopment {
      * @param args the command line arguments
      */ 
     public static void main(String[] args) { 
-        StartPage startPage = new StartPage(2560,1080);
-        startPage.setFullscreen();
-        startPage.showPage();
+        Window window = new Window();
+        SettingsPage settingsPage = new SettingsPage();
+        StartPage startPage = new StartPage(window, settingsPage);
+        startPage.setVisible(true);
     }
     
 }
