@@ -15,10 +15,14 @@ public class TSASoftwareDevelopment {
      * @param args the command line arguments
      */ 
     public static void main(String[] args) { 
+        // objects
         Window window = new Window();
         SettingsPage settingsPage = new SettingsPage();
-        StartPage startPage = new StartPage(window, settingsPage);
-        startPage.setVisible(true);
+        StartPage startPage = new StartPage(settingsPage);
+        
+        // run program
+        startPage.showPage();
+        settingsPage.linkWindows(startPage);
     }
     
 }

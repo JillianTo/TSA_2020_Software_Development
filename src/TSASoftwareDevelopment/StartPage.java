@@ -31,8 +31,8 @@ public class StartPage extends Window {
     }
     
     // user-defined constructor
-    public StartPage(Window frame2, SettingsPage settingsPage) {
-        super(frame2, settingsPage);
+    public StartPage(SettingsPage settingsPage) {
+        super(settingsPage);
         createPage();
     }
 
@@ -45,13 +45,15 @@ public class StartPage extends Window {
                 ((int)(Window.windowHeight*0.05)), Window.windowWidth,
                 ((int)(Window.windowHeight*0.1)));
         welcomeLbl.setFont(new Font(SANS_SERIF, Font.BOLD, 72));
-        lessonPanel.setBounds(((int)(windowWidth*0.05)),
-                ((int)(windowHeight*0.2)), ((int)(windowWidth*0.5)),
-                ((int)(windowHeight*0.6)));
+        lessonPanel.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.2)), 
+                ((int)(Window.windowWidth*0.5)), 
+                ((int)(Window.windowHeight*0.6)));
         lessonPanel.setBackground(Color.LIGHT_GRAY);
-        levelPanel.setBounds(((int)(windowWidth*0.5)),
-                ((int)(windowHeight*0.2)), ((int)(windowWidth*0.2)),
-                ((int)(windowHeight*0.6)));
+        levelPanel.setBounds(((int)(Window.windowWidth*0.5)),
+                ((int)(Window.windowHeight*0.2)), 
+                ((int)(Window.windowWidth*0.2)), 
+                ((int)(Window.windowHeight*0.6)));
         switch(level) {
             case 1:
                 levelPanel.setBackground(Color.CYAN);
@@ -71,5 +73,6 @@ public class StartPage extends Window {
         this.getJFrame().add(welcomeLbl);
         this.getJFrame().add(lessonPanel);
         this.getJFrame().add(levelPanel);
+        Window.currentWindow = this;
         }
 }

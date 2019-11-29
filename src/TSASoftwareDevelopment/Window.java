@@ -20,61 +20,50 @@ public class Window extends JFrame {
     // primitives
     static int windowWidth;
     static int windowHeight;
+    static boolean isMinimized = false;
     
     // objects
+    static String name;
     private JFrame frame;
-    private JFrame frame2;
-    private JFrame settingsPage;
-    private JButton exitBtn;
+    static Window currentWindow;
+    private Window window;
+    private SettingsPage settingsPage;
     private JButton settingsBtn;
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    static String name;
     
     // no-args constructor
     public Window() {
+        windowWidth = (int)screenSize.getWidth();
+        windowHeight = (int)screenSize.getHeight();
         createPage();
-    }
-    
-    // user-defined constructor
-    public Window(Window frame2, SettingsPage settingsPage) {
-        this.frame2 = frame2;
-        this.settingsPage = settingsPage;
-        createPage();
+        fullscreen();
     }
 
+    public Window(SettingsPage settingsPage) {
+        windowWidth = (int)screenSize.getWidth();
+        windowHeight = (int)screenSize.getHeight();
+        this.settingsPage = settingsPage;
+        createPage();
+        fullscreen();
+    }
+    
     // creates page
     private void createPage() {
-        windowWidth = (int)screenSize.getWidth();
-        System.out.println(windowWidth);
-        windowHeight = (int)screenSize.getHeight();
-        System.out.println(windowHeight);
         frame = new JFrame(); 
-        exitBtn = new JButton("Exit");
         settingsBtn = new JButton("Settings");
-        exitBtn.setBounds((int)(windowWidth*0.85), (int)(windowHeight*0.85),
-                (int)(windowWidth*0.1), (int)(windowHeight*0.1)); // x-axis, y-axis, width, height
-        exitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
         settingsBtn.setBounds((int)(windowWidth*0.9),
                 (int)(windowHeight*0.07), (int)(windowWidth*0.05),
                 (int)(windowHeight*0.05));
         settingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                settingsPage.setVisible(true);
+                hidePage();
+                settingsPage.showPage();
             }
         });
-        frame.add(exitBtn);
         frame.add(settingsBtn);
         frame.setLayout(null); // placeholder
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setUndecorated(true);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
     }
     
     // returns JFrame
@@ -82,8 +71,38 @@ public class Window extends JFrame {
         return frame;
     }
     
+    public Window getWindow() {
+        return window;
+    }
+    
     // returns settings button
     public JButton getSettingsBtn() {
         return settingsBtn;
+    }
+    
+    public void showPage() {
+        frame.setVisible(true);
+    }
+    
+    public void hidePage() {
+        frame.setVisible(false);
+    }
+    
+    public void fullscreen() {
+        frame.dispose();
+        frame.setUndecorated(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        showPage();
+    }
+    
+    public void minimize(int windowWidth, int windowHeight) {
+        frame.dispose();
+        frame.setUndecorated(false);
+        frame.setSize(windowWidth, windowHeight); // doesn't currently work
+        showPage();
+    }
+    
+    public void linkWindows(Window window) {
+        this.window = window;
     }
 }
