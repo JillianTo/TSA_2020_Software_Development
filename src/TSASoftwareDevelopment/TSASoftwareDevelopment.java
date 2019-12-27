@@ -16,13 +16,11 @@ public class TSASoftwareDevelopment {
      */ 
     public static void main(String[] args) { 
         // objects
-        Window window = new Window();
-        SettingsPage settingsPage = new SettingsPage();
-        StartPage startPage = new StartPage(settingsPage);
+        //StartPage startPage = new StartPage(1920, 1080);
+        StartPage startPage = new StartPage();
         
         // run program
         startPage.showPage();
-        settingsPage.linkWindows(startPage);
     }
     
 }

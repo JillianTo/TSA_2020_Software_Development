@@ -18,17 +18,17 @@ import javax.swing.*;
  */
 public class Window extends JFrame {
     // primitives
+    static int level = 1; // placeholder, replace with level from save
     static int windowWidth;
     static int windowHeight;
-    static boolean isMinimized = false;
     
     // objects
     static String name;
     private JFrame frame;
+    static JButton exitBtn;
     static Window currentWindow;
-    private Window window;
-    private SettingsPage settingsPage;
-    private JButton settingsBtn;
+    private Window nextWindow;
+    private StartPage startPage;
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     
     // no-args constructor
@@ -36,48 +36,60 @@ public class Window extends JFrame {
         windowWidth = (int)screenSize.getWidth();
         windowHeight = (int)screenSize.getHeight();
         createPage();
-        fullscreen();
     }
-
-    public Window(SettingsPage settingsPage) {
-        windowWidth = (int)screenSize.getWidth();
-        windowHeight = (int)screenSize.getHeight();
-        this.settingsPage = settingsPage;
+    
+    
+    
+    // user-defined resolution constructor
+    public Window(int windowWidth, int windowHeight) {
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
         createPage();
-        fullscreen();
+    }
+    
+    // user-defined start page constructor
+    public Window(StartPage startPage) {
+        this.startPage = startPage;
+        createPage();
+    }
+    
+    // user-defined start page and resolution constructor
+    public Window(int windowWidth, int windowHeight, StartPage startPage) {
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
+        this.startPage = startPage;
+        createPage();
     }
     
     // creates page
     private void createPage() {
         frame = new JFrame(); 
-        settingsBtn = new JButton("Settings");
-        settingsBtn.setBounds((int)(windowWidth*0.9),
-                (int)(windowHeight*0.07), (int)(windowWidth*0.05),
-                (int)(windowHeight*0.05));
-        settingsBtn.addActionListener(new ActionListener() {
+        exitBtn = new JButton("Exit");
+        exitBtn.setBounds((int)(Window.windowWidth*0.9),
+                (int)(Window.windowHeight*0.075), 
+                (int)(Window.windowWidth*0.05),
+                (int)(Window.windowHeight*0.05));
+        exitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                hidePage();
-                settingsPage.showPage();
+                System.exit(0);
             }
         });
-        frame.add(settingsBtn);
+        frame.add(exitBtn);
         frame.setLayout(null); // placeholder
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setUndecorated(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        Window.currentWindow = this;
     }
     
     // returns JFrame
-    public JFrame getJFrame() {
+    public JFrame getFrame() {
         return frame;
     }
     
-    public Window getWindow() {
-        return window;
-    }
-    
-    // returns settings button
-    public JButton getSettingsBtn() {
-        return settingsBtn;
+    public Window getNextWindow() {
+        return nextWindow;
     }
     
     public void showPage() {
@@ -88,21 +100,7 @@ public class Window extends JFrame {
         frame.setVisible(false);
     }
     
-    public void fullscreen() {
-        frame.dispose();
-        frame.setUndecorated(true);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        showPage();
-    }
-    
-    public void minimize(int windowWidth, int windowHeight) {
-        frame.dispose();
-        frame.setUndecorated(false);
-        frame.setSize(windowWidth, windowHeight); // doesn't currently work
-        showPage();
-    }
-    
-    public void linkWindows(Window window) {
-        this.window = window;
+    public void linkWindows(Window nextWindow) {
+        this.nextWindow = nextWindow;
     }
 }

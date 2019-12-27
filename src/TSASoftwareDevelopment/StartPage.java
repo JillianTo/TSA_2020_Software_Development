@@ -8,6 +8,8 @@ package TSASoftwareDevelopment;
 import java.awt.Color;
 import java.awt.Font;
 import static java.awt.Font.SANS_SERIF;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -16,9 +18,6 @@ import javax.swing.*;
  */
 
 public class StartPage extends Window {
-    // primitives
-    private int level = 1; // placeholder, replace with level from save
-    
     // objects
     private JLabel welcomeLbl;
     private JPanel lessonPanel;
@@ -30,9 +29,9 @@ public class StartPage extends Window {
         createPage();
     }
     
-    // user-defined constructor
-    public StartPage(SettingsPage settingsPage) {
-        super(settingsPage);
+    // user-defined resolution constructor
+    public StartPage(int windowWidth, int windowHeight) {
+        super(windowWidth, windowHeight);
         createPage();
     }
 
@@ -54,7 +53,7 @@ public class StartPage extends Window {
                 ((int)(Window.windowHeight*0.2)), 
                 ((int)(Window.windowWidth*0.2)), 
                 ((int)(Window.windowHeight*0.6)));
-        switch(level) {
+        switch(Window.level) { // add later that this will choose which level window to open based on save
             case 1:
                 levelPanel.setBackground(Color.CYAN);
                 break;
@@ -70,9 +69,9 @@ public class StartPage extends Window {
             default:
                 levelPanel.setBackground(Color.RED);
         }
-        this.getJFrame().add(welcomeLbl);
-        this.getJFrame().add(lessonPanel);
-        this.getJFrame().add(levelPanel);
-        Window.currentWindow = this;
+        this.getFrame().add(welcomeLbl);
+        this.getFrame().add(lessonPanel);
+        this.getFrame().add(levelPanel);
+        
         }
 }
