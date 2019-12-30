@@ -13,13 +13,13 @@ import javax.swing.*;
 
 /**
  *
- * @author jilli
+ * @author Jillian To
  */
 public class MultipleChoice extends Window {
+    // primitives
+    private final int FONT_SIZE = 16;
+    
     // objects
-    private JButton submitBtn;
-    private JLabel levelLbl;
-    private JLabel questionLbl;
     private JRadioButton aBtn;
     private JRadioButton bBtn;
     private JRadioButton cBtn;
@@ -34,9 +34,7 @@ public class MultipleChoice extends Window {
     
     // create window
     private void createWindow() {
-        submitBtn = new JButton("Check Answer");
-        levelLbl = new JLabel("Level " + Window.level);
-        questionLbl = new JLabel();
+        
         aBtn = new JRadioButton();
         bBtn = new JRadioButton();
         cBtn = new JRadioButton();
@@ -46,48 +44,30 @@ public class MultipleChoice extends Window {
         mcGroup.add(bBtn);
         mcGroup.add(cBtn);
         mcGroup.add(dBtn);
-        submitBtn.setBounds(((int)(Window.windowWidth*0.875)),
-                ((int)(Window.windowHeight*0.8)), 
-                ((int)(Window.windowWidth*0.1)), 
+        switch(Window.level) { // placeholder, change question text depending on level
+            default:
+                questionLbl.setText("Question");
+        }
+        aBtn.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.55)), 
+                ((int)(Window.windowWidth*0.75)), 
                 ((int)(Window.windowHeight*0.1)));
-        submitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch(Window.level) { // placeholder, change correct answer depending on level
-                    default:
-                        if(aBtn.isSelected()) {
-                            Window.level++; // add save
-                            JOptionPane.showMessageDialog(null, "Correct");
-                            getWindow().hideWindow();
-                            Window.startPage.showWindow();
-                        } else
-                            JOptionPane.showMessageDialog(null, "Incorrect");
-                }
-            }
-        });
-        levelLbl.setBounds(((int)(Window.windowWidth*0.05)),
-                ((int)(Window.windowHeight*0.05)), Window.windowWidth,
+        aBtn.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
+        bBtn.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.65)), 
+                ((int)(Window.windowWidth*0.75)), 
                 ((int)(Window.windowHeight*0.1)));
-        levelLbl.setFont(new Font(SANS_SERIF, Font.BOLD, 72));
-        questionLbl.setBounds(((int)(Window.windowWidth*0.05)),
-                ((int)(Window.windowHeight*0.05)), Window.windowWidth,
+        bBtn.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
+        cBtn.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.75)), 
+                ((int)(Window.windowWidth*0.75)), 
                 ((int)(Window.windowHeight*0.1)));
-        aBtn.setBounds(((int)(Window.windowWidth*0.1)),
-                ((int)(Window.windowHeight*0.6)), 
-                ((int)(Window.windowWidth*0.1)), 
+        cBtn.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
+        dBtn.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.85)), 
+                ((int)(Window.windowWidth*0.75)), 
                 ((int)(Window.windowHeight*0.1)));
-        bBtn.setBounds(((int)(Window.windowWidth*0.1)),
-                ((int)(Window.windowHeight*0.7)), 
-                ((int)(Window.windowWidth*0.1)), 
-                ((int)(Window.windowHeight*0.1)));
-        cBtn.setBounds(((int)(Window.windowWidth*0.1)),
-                ((int)(Window.windowHeight*0.8)), 
-                ((int)(Window.windowWidth*0.1)), 
-                ((int)(Window.windowHeight*0.1)));
-        dBtn.setBounds(((int)(Window.windowWidth*0.1)),
-                ((int)(Window.windowHeight*0.9)), 
-                ((int)(Window.windowWidth*0.1)), 
-                ((int)(Window.windowHeight*0.1)));
+        dBtn.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
         switch(Window.level) { // placeholder, change answer text depending on level
             default:
                 aBtn.setText("A");
@@ -95,14 +75,28 @@ public class MultipleChoice extends Window {
                 cBtn.setText("C");
                 dBtn.setText("D");
         }
-        this.getFrame().add(submitBtn);
-        this.getFrame().add(levelLbl);
-        this.getFrame().add(questionLbl);
-        this.getFrame().add(aBtn);
-        this.getFrame().add(bBtn);
-        this.getFrame().add(cBtn);
-        this.getFrame().add(dBtn);
-        this.getFrame().remove(continueBtn);
+         nextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch(Window.level) { // placeholder, change correct answer depending on level
+                    default:
+                        if(aBtn.isSelected()) {
+                            Window.level++; // add external save
+                            JOptionPane.showMessageDialog(null, "Correct, good "
+                                    + "job!");
+                            Window.startPage = new StartPage();
+                            Window.startPage.showWindow();
+                        } else
+                            JOptionPane.showMessageDialog(null, "Incorrect, try"
+                                    + " again.");
+                }
+            }
+        });
+        nextBtn.setText("Check Answer");
+        frame.add(aBtn);
+        frame.add(bBtn);
+        frame.add(cBtn);
+        frame.add(dBtn);
     }
 
 }
