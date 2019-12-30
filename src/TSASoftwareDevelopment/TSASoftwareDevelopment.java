@@ -15,12 +15,8 @@ public class TSASoftwareDevelopment {
      * @param args the command line arguments
      */ 
     public static void main(String[] args) { 
-        // objects
-        //StartPage startPage = new StartPage(1920, 1080);
-        StartPage startPage = new StartPage();
-        
         // run program
-        startPage.showPage();
+        Window.run();
     }
     
 }

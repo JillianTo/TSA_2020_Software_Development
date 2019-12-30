@@ -19,31 +19,34 @@ import javax.swing.*;
 
 public class StartPage extends Window {
     // objects
-    private JLabel welcomeLbl;
     private JPanel lessonPanel;
     private JPanel levelPanel;
+    private JLabel welcomeLbl;
     
     // no-args constructor
     public StartPage() {
         super();
-        createPage();
+        createWindow();
     }
     
     // user-defined resolution constructor
     public StartPage(int windowWidth, int windowHeight) {
         super(windowWidth, windowHeight);
-        createPage();
+        createWindow();
     }
 
-    // creates page
-    private void createPage() {
-        welcomeLbl = new JLabel("Welcome " + Window.name + "!");
+    // creates window
+    private void createWindow() {
         lessonPanel = new JPanel();
         levelPanel = new JPanel();
-        welcomeLbl.setBounds(((int)(Window.windowWidth*0.05)),
-                ((int)(Window.windowHeight*0.05)), Window.windowWidth,
-                ((int)(Window.windowHeight*0.1)));
-        welcomeLbl.setFont(new Font(SANS_SERIF, Font.BOLD, 72));
+        exitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        welcomeLbl = new JLabel("Welcome " + Window.name + "!");
+        
         lessonPanel.setBounds(((int)(Window.windowWidth*0.05)),
                 ((int)(Window.windowHeight*0.2)), 
                 ((int)(Window.windowWidth*0.5)), 
@@ -53,7 +56,7 @@ public class StartPage extends Window {
                 ((int)(Window.windowHeight*0.2)), 
                 ((int)(Window.windowWidth*0.2)), 
                 ((int)(Window.windowHeight*0.6)));
-        switch(Window.level) { // add later that this will choose which level window to open based on save
+        switch(Window.level) {
             case 1:
                 levelPanel.setBackground(Color.CYAN);
                 break;
@@ -69,9 +72,12 @@ public class StartPage extends Window {
             default:
                 levelPanel.setBackground(Color.RED);
         }
-        this.getFrame().add(welcomeLbl);
+        welcomeLbl.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.05)), Window.windowWidth,
+                ((int)(Window.windowHeight*0.1)));
+        welcomeLbl.setFont(new Font(SANS_SERIF, Font.BOLD, 72));
         this.getFrame().add(lessonPanel);
         this.getFrame().add(levelPanel);
-        
+        this.getFrame().add(welcomeLbl);
         }
 }

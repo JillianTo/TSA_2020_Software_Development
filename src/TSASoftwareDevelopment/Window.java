@@ -24,47 +24,46 @@ public class Window extends JFrame {
     
     // objects
     static String name;
+    static MultipleChoice multipleChoice;
+    static StartPage startPage;
+    public JButton continueBtn;
+    public JButton exitBtn;
     private JFrame frame;
-    static JButton exitBtn;
-    static Window currentWindow;
-    private Window nextWindow;
-    private StartPage startPage;
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     
     // no-args constructor
     public Window() {
         windowWidth = (int)screenSize.getWidth();
         windowHeight = (int)screenSize.getHeight();
-        createPage();
+        createWindow();
     }
-    
-    
     
     // user-defined resolution constructor
     public Window(int windowWidth, int windowHeight) {
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
-        createPage();
+        createWindow();
     }
     
-    // user-defined start page constructor
-    public Window(StartPage startPage) {
-        this.startPage = startPage;
-        createPage();
-    }
-    
-    // user-defined start page and resolution constructor
-    public Window(int windowWidth, int windowHeight, StartPage startPage) {
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
-        this.startPage = startPage;
-        createPage();
-    }
-    
-    // creates page
-    private void createPage() {
+    // creates window
+    private void createWindow() {
         frame = new JFrame(); 
+        continueBtn = new JButton("Continue");
         exitBtn = new JButton("Exit");
+        continueBtn.setBounds(((int)(Window.windowWidth*0.605)),
+                ((int)(Window.windowHeight*0.7)), 
+                ((int)(Window.windowWidth*0.05)), 
+                ((int)(Window.windowHeight*0.05)));
+        continueBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch(level) { // placeholder, change what window is opened depending on level
+                    default:
+                        multipleChoice = new MultipleChoice();
+                        multipleChoice.showWindow();
+                }
+            }
+        });
         exitBtn.setBounds((int)(Window.windowWidth*0.9),
                 (int)(Window.windowHeight*0.075), 
                 (int)(Window.windowWidth*0.05),
@@ -72,15 +71,18 @@ public class Window extends JFrame {
         exitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                continueBtn.setVisible(true);
+                getWindow().hideWindow();
+                startPage.showWindow(); 
+                
             }
         });
+        frame.add(continueBtn);
         frame.add(exitBtn);
-        frame.setLayout(null); // placeholder
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setUndecorated(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        Window.currentWindow = this;
+        frame.setLayout(null); // not necessary, just in case a layout change is wanted later
+        frame.setUndecorated(true);
     }
     
     // returns JFrame
@@ -88,19 +90,25 @@ public class Window extends JFrame {
         return frame;
     }
     
-    public Window getNextWindow() {
-        return nextWindow;
+    public Window getWindow() {
+        return this;
     }
     
-    public void showPage() {
+    public void showWindow() {
         frame.setVisible(true);
     }
     
-    public void hidePage() {
+    public void hideWindow() {
         frame.setVisible(false);
     }
     
-    public void linkWindows(Window nextWindow) {
-        this.nextWindow = nextWindow;
+    public void resetWindow() {
+        frame.dispose();
+        createWindow();
+    }
+    
+    public static void run() {
+        startPage = new StartPage();
+        startPage.showWindow();
     }
 }
