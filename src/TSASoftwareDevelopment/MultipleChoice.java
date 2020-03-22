@@ -34,7 +34,6 @@ public class MultipleChoice extends Window {
     
     // create window
     private void createWindow() {
-        
         aBtn = new JRadioButton();
         bBtn = new JRadioButton();
         cBtn = new JRadioButton();
