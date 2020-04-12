@@ -28,6 +28,7 @@ public class StartPage extends Window {
     private EventListener[] listenersA;
     private EventListener[] listenersB;
     private EventListener[] listenersC;
+    private JButton continueBtn; // using nextBtn for this function doesn't work
     private JCheckBox sectionA;
     private JCheckBox sectionB;
     private JCheckBox sectionC;
@@ -51,6 +52,7 @@ public class StartPage extends Window {
     // creates window
     private void createWindow() {
         // object instantiations
+        continueBtn = new JButton("Continue");
         sectionA = new JCheckBox();
         sectionB = new JCheckBox();
         sectionC = new JCheckBox();
@@ -83,7 +85,7 @@ public class StartPage extends Window {
         exitBtn.setText("Exit");
         
         // chooses what level the continue button will open
-        nextBtn.addActionListener(new ActionListener() {
+        continueBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch(level) { 
@@ -104,11 +106,10 @@ public class StartPage extends Window {
         });
         
         // layout
-        nextBtn.setBounds(((int)(Window.windowWidth*0.6025)),
+        continueBtn.setBounds(((int)(Window.windowWidth*0.6025)),
                 ((int)(Window.windowHeight*0.7)), 
                 ((int)(Window.windowWidth*0.05)), 
                 ((int)(Window.windowHeight*0.05)));
-        nextBtn.setText("Continue");
         sectionA.setBounds(((int)(Window.windowWidth*0.075)),
                 ((int)(Window.windowHeight*0.25)), 
                 ((int)(Window.windowWidth*0.4)),
@@ -183,6 +184,7 @@ public class StartPage extends Window {
         
         // adds components to JFrame
         frame.remove(levelPnl); // done so that this panel doesn't go over the continue button
+        frame.add(continueBtn);
         frame.add(sectionA);
         frame.add(sectionB);
         frame.add(sectionC);
@@ -193,6 +195,7 @@ public class StartPage extends Window {
         frame.add(levelPnl);
         frame.add(progressBar);
         frame.remove(backBtn);
+        frame.remove(nextBtn);
         frame.remove(questionLbl);
         }
 }
