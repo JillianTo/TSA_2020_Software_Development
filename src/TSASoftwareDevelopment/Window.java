@@ -25,15 +25,20 @@ public class Window extends JFrame {
     public static int windowHeight;
     
     // objects
+    public static String levelInfo;
     public static String name;
+    public static FillInTheBlanks fillInTheBlanks;
+    public static Maze maze;
     public static MultipleChoice multipleChoice;
     public static StartPage startPage;
+    public static Text text;
+    public JButton backBtn;
     public JButton exitBtn;
     public JButton nextBtn;
+    public JFrame frame;
     public JLabel levelLbl;
     public JLabel questionLbl;
     public JPanel levelPnl;
-    public JFrame frame;
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     
     // no-args constructor
@@ -52,16 +57,40 @@ public class Window extends JFrame {
     
     // creates window
     private void createWindow() {
-        frame = new JFrame(); 
-        exitBtn = new JButton("Return");
+        // object instantiations
+        frame = new JFrame();
+        backBtn = new JButton("Back");
+        exitBtn = new JButton("Return to Menu");
         nextBtn = new JButton("Next");
-        levelLbl = new JLabel("Level " + Window.level);
+        levelLbl = new JLabel();
         questionLbl = new JLabel();
         levelPnl = new JPanel();
-        exitBtn.setBounds((int)(Window.windowWidth*0.9),
-                (int)(Window.windowHeight*0.075), 
-                (int)(Window.windowWidth*0.05),
-                (int)(Window.windowHeight*0.05));
+        
+        // chooses what level the back button will go to
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(Window.level > 0)
+                    Window.levelDown();
+                switch(Window.level) {
+                    case 1:
+                        Window.text = new Text();
+                        Window.text.showWindow();
+                        break;
+                    default:
+                        Window.startPage = new StartPage();
+                        Window.startPage.showWindow();
+                }
+            }
+        });
+        
+        // layout
+        backBtn.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.825)), 
+                ((int)(Window.windowWidth*0.1)), 
+                ((int)(Window.windowHeight*0.1)));
+        
+        // exit button goes back to the start page
         exitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -70,6 +99,24 @@ public class Window extends JFrame {
                 
             }
         });
+        
+        // layout
+        exitBtn.setBounds((int)(Window.windowWidth*0.9),
+                (int)(Window.windowHeight*0.075), 
+                (int)(Window.windowWidth*0.05),
+                (int)(Window.windowHeight*0.05));
+        
+        // default next button behavior
+        nextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window.levelUp();
+                Window.startPage = new StartPage();
+                Window.startPage.showWindow();
+            }
+        });
+        
+        // layout
         nextBtn.setBounds(((int)(Window.windowWidth*0.85)),
                 ((int)(Window.windowHeight*0.825)), 
                 ((int)(Window.windowWidth*0.1)), 
@@ -85,22 +132,37 @@ public class Window extends JFrame {
         questionLbl.setFont(new Font(SANS_SERIF, Font.PLAIN, 24));
         levelPnl.setBounds(0, 0, ((int)(Window.windowWidth*0.8)), 
                 ((int)(Window.windowHeight*0.2)));
+        
+        // changes background color and level text depending on level variable
         switch(Window.level) {
-            case 2:
+            case 7:
+                levelInfo = "Syntax"; // no reason for this to be here rather than StartPage other than to save having another switch statement
+                levelLbl.setText("Level 2");
                 levelPnl.setBackground(Color.GREEN);
                 break;
-            case 3:
+            case 8:
+                levelInfo = "Variables";
+                levelLbl.setText("Level 3");
                 levelPnl.setBackground(Color.ORANGE);
                 break;
-            case 4:
+            case 9:
+                levelInfo = "If Then Statements";
+                levelLbl.setText("Level 4");
                 levelPnl.setBackground(Color.YELLOW);
                 break;
-            case 5:
+            case 10:
+                levelInfo = "Loops";
+                levelLbl.setText("Level 5");
                 levelPnl.setBackground(Color.RED);
                 break;    
             default:
+                levelInfo = "Algorithms";
+                levelLbl.setText("Level 1");
                 levelPnl.setBackground(Color.CYAN);
         }
+        
+        // adds components to JFrame
+        frame.add(backBtn);
         frame.add(exitBtn);
         frame.add(nextBtn);
         frame.add(levelLbl);
@@ -127,5 +189,13 @@ public class Window extends JFrame {
     public static void run() {
         startPage = new StartPage();
         startPage.showWindow();
+    }
+    
+    public static void levelUp() {
+        level++; //add external save
+    }
+    
+    public static void levelDown() {
+        level--; //add external save
     }
 }

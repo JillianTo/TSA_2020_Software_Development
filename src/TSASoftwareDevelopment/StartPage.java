@@ -28,13 +28,13 @@ public class StartPage extends Window {
     private EventListener[] listenersA;
     private EventListener[] listenersB;
     private EventListener[] listenersC;
-    private JButton continueBtn;
-    private JLabel welcomeLbl;
     private JCheckBox sectionA;
     private JCheckBox sectionB;
     private JCheckBox sectionC;
-    private JProgressBar progressBar;
+    private JLabel levelInfoLbl;
+    private JLabel welcomeLbl;
     private JPanel lessonPnl;
+    private JProgressBar progressBar;
     
     // no-args constructor
     public StartPage() {
@@ -50,74 +50,121 @@ public class StartPage extends Window {
 
     // creates window
     private void createWindow() {
-        continueBtn = new JButton("Continue");
-        welcomeLbl = new JLabel("Welcome " + Window.name + "!");
+        // object instantiations
         sectionA = new JCheckBox();
         sectionB = new JCheckBox();
         sectionC = new JCheckBox();
-        progressBar = new JProgressBar(0, MAX_LEVEL);
+        levelInfoLbl = new JLabel();
+        welcomeLbl = new JLabel("Welcome " + Window.name + "!");
         lessonPnl = new JPanel();
-        continueBtn.setBounds(((int)(Window.windowWidth*0.6025)),
-                ((int)(Window.windowHeight*0.7)), 
-                ((int)(Window.windowWidth*0.05)), 
-                ((int)(Window.windowHeight*0.05)));
-        continueBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch(level) { // placeholder, change what window is opened depending on level
-                    default:
-                        Window.multipleChoice = new MultipleChoice();
-                        Window.multipleChoice.showWindow();
-                }
-            }
-        });
-        welcomeLbl.setBounds(((int)(Window.windowWidth*0.05)),
-                ((int)(Window.windowHeight*0.05)), Window.windowWidth,
-                ((int)(Window.windowHeight*0.1)));
-        welcomeLbl.setFont(new Font(SANS_SERIF, Font.BOLD, 72));
-        sectionA.setBounds(((int)(Window.windowWidth*0.075)),
-                ((int)(Window.windowHeight*0.25)), 
-                ((int)(Window.windowWidth*0.4)),
-                ((int)(Window.windowHeight*0.1)));
-        sectionA.setOpaque(false);
-        sectionA.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
+        progressBar = new JProgressBar(0, MAX_LEVEL);
+        
+        // remove listeners on check boxes so user can't manually check them
         listenersA = sectionA.getListeners(MouseListener.class);
         for (EventListener eventListener : listenersA) {
             sectionA.removeMouseListener((MouseListener) eventListener);
         }
-        sectionB.setBounds(((int)(Window.windowWidth*0.075)),
-                ((int)(Window.windowHeight*0.4375)), 
-                ((int)(Window.windowWidth*0.4)),
-                ((int)(Window.windowHeight*0.1)));
-        sectionB.setOpaque(false);
-        sectionB.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
         listenersB = sectionB.getListeners(MouseListener.class);
         for (EventListener eventListener : listenersB) {
             sectionB.removeMouseListener((MouseListener) eventListener);
-        }
-        sectionC.setBounds(((int)(Window.windowWidth*0.075)),
-                ((int)(Window.windowHeight*0.625)), 
-                ((int)(Window.windowWidth*0.4)),
-                ((int)(Window.windowHeight*0.1)));
-        sectionC.setOpaque(false);
-        sectionC.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
-        switch(Window.level) { // placeholder, change lesson text and what boxes are checked depending on level
-            default:
-                sectionA.setText("Basics 1");
-                sectionB.setText("Basics 2");
-                sectionC.setText("Basics 3");
         }
         listenersC = sectionC.getListeners(MouseListener.class);
         for (EventListener eventListener : listenersC) {
             sectionC.removeMouseListener((MouseListener) eventListener);
         }
-        sectionC.setFocusable(false);
-        progressBar.setBounds(((int)(Window.windowWidth*0.05)),
-                ((int)(Window.windowHeight*0.875)), 
-                ((int)(Window.windowWidth*0.2)), 
+        
+        // makes exit button quit the program
+        exitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        exitBtn.setText("Exit");
+        
+        // chooses what level the continue button will open
+        nextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch(level) { 
+                    case 0:
+                        Window.text = new Text();
+                        Window.text.showWindow();
+                        break;
+                    case 1:
+                        Window.fillInTheBlanks = new FillInTheBlanks();
+                        Window.fillInTheBlanks.showWindow();
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "Corrupted save, "
+                                + "please exit the program and delete your save"
+                                + " file to regenerate it.");
+                }
+            }
+        });
+        
+        // layout
+        nextBtn.setBounds(((int)(Window.windowWidth*0.6025)),
+                ((int)(Window.windowHeight*0.7)), 
+                ((int)(Window.windowWidth*0.05)), 
                 ((int)(Window.windowHeight*0.05)));
-        progressBar.setValue(Window.level);
-        progressBar.setStringPainted(true);
+        nextBtn.setText("Continue");
+        sectionA.setBounds(((int)(Window.windowWidth*0.075)),
+                ((int)(Window.windowHeight*0.25)), 
+                ((int)(Window.windowWidth*0.4)),
+                ((int)(Window.windowHeight*0.1)));
+        sectionA.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
+        sectionA.setOpaque(false);
+        sectionB.setBounds(((int)(Window.windowWidth*0.075)),
+                ((int)(Window.windowHeight*0.4375)), 
+                ((int)(Window.windowWidth*0.4)),
+                ((int)(Window.windowHeight*0.1)));
+        sectionB.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
+        sectionB.setOpaque(false);
+        sectionC.setBounds(((int)(Window.windowWidth*0.075)),
+                ((int)(Window.windowHeight*0.625)), 
+                ((int)(Window.windowWidth*0.4)),
+                ((int)(Window.windowHeight*0.1)));
+        sectionC.setFocusable(false); // don't remember what this was for
+        sectionC.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
+        sectionC.setOpaque(false);
+        
+        // change lesson text and what boxes are checked depending on level
+        switch(Window.level) { 
+            default:
+                sectionA.setText("Basics 1");
+                sectionB.setText("Basics 2");
+                sectionC.setText("Basics 3");
+        }
+        switch(Window.level) {
+            case 2:
+                sectionA.setSelected(true);
+                sectionB.setSelected(false);
+                sectionC.setSelected(false);
+                break;
+            default:
+                sectionA.setSelected(false);
+                sectionB.setSelected(false);
+                sectionC.setSelected(false);
+        }
+        
+        // layout
+        levelLbl.setBounds(((int)(Window.windowWidth*0.58)),
+                ((int)(Window.windowHeight*0.1)), 
+                ((int)(Window.windowWidth*0.2)), 
+                ((int)(Window.windowHeight*0.6)));
+        levelInfoLbl.setBounds(((int)(Window.windowWidth*0.595)),
+                ((int)(Window.windowHeight*0.25)), 
+                ((int)(Window.windowWidth*0.2)), 
+                ((int)(Window.windowHeight*0.6)));
+        levelInfoLbl.setFont(new Font(SANS_SERIF, Font.PLAIN, 32));
+        levelInfoLbl.setText(Window.levelInfo);
+        
+        // layout
+        welcomeLbl.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.05)), Window.windowWidth,
+                ((int)(Window.windowHeight*0.1)));
+        welcomeLbl.setFont(new Font(SANS_SERIF, Font.BOLD, 72));
         lessonPnl.setBounds(((int)(Window.windowWidth*0.05)),
                 ((int)(Window.windowHeight*0.2)), 
                 ((int)(Window.windowWidth*0.5)), 
@@ -127,24 +174,25 @@ public class StartPage extends Window {
                 ((int)(Window.windowHeight*0.2)), 
                 ((int)(Window.windowWidth*0.2)), 
                 ((int)(Window.windowHeight*0.6)));
-        exitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        exitBtn.setText("Exit");
+        progressBar.setBounds(((int)(Window.windowWidth*0.05)),
+                ((int)(Window.windowHeight*0.875)), 
+                ((int)(Window.windowWidth*0.2)), 
+                ((int)(Window.windowHeight*0.05)));
+        progressBar.setStringPainted(true);
+        progressBar.setValue(Window.level);
+        
+        // adds components to JFrame
         frame.remove(levelPnl); // done so that this panel doesn't go over the continue button
-        frame.add(continueBtn);
-        frame.add(welcomeLbl);
         frame.add(sectionA);
         frame.add(sectionB);
         frame.add(sectionC);
-        frame.add(progressBar);
+        frame.add(levelLbl);
+        frame.add(levelInfoLbl);
+        frame.add(welcomeLbl);
         frame.add(lessonPnl);
         frame.add(levelPnl);
-        frame.remove(nextBtn);
-        frame.remove(levelLbl);
+        frame.add(progressBar);
+        frame.remove(backBtn);
         frame.remove(questionLbl);
         }
 }

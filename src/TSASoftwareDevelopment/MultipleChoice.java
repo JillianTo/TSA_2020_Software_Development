@@ -20,13 +20,13 @@ public class MultipleChoice extends Window {
     private final int FONT_SIZE = 16;
     
     // objects
+    private ButtonGroup mcGroup;
     private JRadioButton aBtn;
     private JRadioButton bBtn;
     private JRadioButton cBtn;
     private JRadioButton dBtn;
-    private ButtonGroup mcGroup;
     
-    // user-defined start page constructor
+    // no-args constructor
     public MultipleChoice() {
         super();
         createWindow();
@@ -34,19 +34,55 @@ public class MultipleChoice extends Window {
     
     // create window
     private void createWindow() {
+        // object instantiations
+        mcGroup = new ButtonGroup();
         aBtn = new JRadioButton();
         bBtn = new JRadioButton();
         cBtn = new JRadioButton();
         dBtn = new JRadioButton();
-        mcGroup = new ButtonGroup();
+        
+        // adds radio buttons to button group
         mcGroup.add(aBtn);
         mcGroup.add(bBtn);
         mcGroup.add(cBtn);
         mcGroup.add(dBtn);
-        switch(Window.level) { // placeholder, change question text depending on level
+        
+        // checks answer and picks what level the next button will go to
+        nextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch(Window.level) { // placeholder, change correct answer depending on level
+                    case 2:
+                        if(bBtn.isSelected()) {
+                            Window.levelUp();
+                            JOptionPane.showMessageDialog(null, "Correct, good "
+                                    + "job!");
+                            Window.text = new Text();
+                            Window.text.showWindow();
+                        } else
+                            JOptionPane.showMessageDialog(null, "Incorrect, try"
+                                    + " again.");
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "Corrupted save, "
+                                + "please exit the program and delete your save"
+                                + " file to regenerate it.");
+                }
+            }
+        });
+        
+        // layout
+        nextBtn.setText("Check Answer");
+        
+        // changes question text depending on level
+        switch(Window.level) { 
+            case 2:
+                questionLbl.setText("What is an algorithm?");
             default:
                 questionLbl.setText("Question");
         }
+        
+        // layout
         aBtn.setBounds(((int)(Window.windowWidth*0.05)),
                 ((int)(Window.windowHeight*0.55)), 
                 ((int)(Window.windowWidth*0.75)), 
@@ -67,31 +103,24 @@ public class MultipleChoice extends Window {
                 ((int)(Window.windowWidth*0.75)), 
                 ((int)(Window.windowHeight*0.1)));
         dBtn.setFont(new Font(SANS_SERIF, Font.PLAIN, FONT_SIZE));
-        switch(Window.level) { // placeholder, change answer text depending on level
+        
+        // changes answer text depending on level
+        switch(Window.level) { 
+            case 2:
+                aBtn.setText("A computer component.");
+                bBtn.setText("A sequence of steps designed to solve a "
+                        + "particular problem.");
+                cBtn.setText("1000 bytes.");
+                dBtn.setText("A computer programmer.");
+                break;
             default:
                 aBtn.setText("A");
                 bBtn.setText("B");
                 cBtn.setText("C");
                 dBtn.setText("D");
-        }
-         nextBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch(Window.level) { // placeholder, change correct answer depending on level
-                    default:
-                        if(aBtn.isSelected()) {
-                            Window.level++; // add external save
-                            JOptionPane.showMessageDialog(null, "Correct, good "
-                                    + "job!");
-                            Window.startPage = new StartPage();
-                            Window.startPage.showWindow();
-                        } else
-                            JOptionPane.showMessageDialog(null, "Incorrect, try"
-                                    + " again.");
-                }
-            }
-        });
-        nextBtn.setText("Check Answer");
+        } 
+        
+        // adds components to JFrame
         frame.add(aBtn);
         frame.add(bBtn);
         frame.add(cBtn);
